@@ -48,8 +48,9 @@
         </form>
     </div>
     <label>
-    <input type="color" id="colorPicker" value="#000000">
-</label>
+        <input type="color" id="colorPicker" value="#000000">
+    </label>
+    <button id="clearCanvas">クリア</button>
     <button id="sendCanvas">絵を送信</button>
     <canvas id="canvas" width="600" height="600" style="border: solid 1px black"></canvas>
 
@@ -62,7 +63,13 @@
             const canvas = document.getElementById('canvas')
             const ctx = canvas.getContext('2d')
             const colorPicker = document.getElementById('colorPicker')
+            const clearCanvasButton = document.getElementById("clearCanvas")
             const sendCanvasButton = document.getElementById("sendCanvas");
+
+            clearCanvasButton.onclick = function () {
+                ctx.clearRect(0,0,canvas.width,canvas.height)
+            }
+
             let currentColor = colorPicker.value
 
             colorPicker.addEventListener('change', () => {
@@ -149,13 +156,13 @@
 
                         li.appendChild(label)
                         li.appendChild(img)
-                    }else{
-                    if (id === myId) {
-                        li.textContent = `(${id})自分:` + text
                     } else {
-                        li.textContent = id + ': ' + text
+                        if (id === myId) {
+                            li.textContent = `(${id})自分:` + text
+                        } else {
+                            li.textContent = id + ': ' + text
+                        }
                     }
-                }
                     messageList.appendChild(li)
                 }
             }
