@@ -48,7 +48,12 @@
         </form>
     </div>
     <label>
-        <input type="color" id="colorPicker" value="#000000">
+        <input id="color-picker" type="color">
+        <datalist id="color-picker">
+            <option value="#ff0000">
+            <option value="#00ff00">
+            <option value="#0000ff">
+        </datalist>
     </label>
     <canvas id="canvas" width="600" height="600" style="border: solid 1px black"></canvas>
 
@@ -115,14 +120,14 @@
             }
 
             function sendDrawingEvent(x, y, control) {
-                const message = JSON.stringify({ x, y, control,color: currentColor, type: 'paint' })
+                const message = JSON.stringify({ x, y, control, color: currentColor, type: 'paint' })
                 ws.send(message)
             }
 
             ws.onmessage = (event) => {
                 const msg = JSON.parse(event.data)
                 if (msg.type === 'paint') {
-                    const { x, y, control, color} = msg
+                    const { x, y, control, color } = msg
                     console.log({ control })
                     if (control === 'mousedown') {
                         mousedown()
