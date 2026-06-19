@@ -48,13 +48,9 @@
         </form>
     </div>
     <label>
-        <input id="color-picker" type="color">
-        <datalist id="color-picker">
-            <option value="#ff0000">
-            <option value="#00ff00">
-            <option value="#0000ff">
-        </datalist>
+        <input type="color" id="colorPicker" value="#000000">
     </label>
+    <button id="sendCanvas"></button>
     <canvas id="canvas" width="600" height="600" style="border: solid 1px black"></canvas>
 
     <script>
@@ -66,6 +62,7 @@
             const canvas = document.getElementById('canvas')
             const ctx = canvas.getContext('2d')
             const colorPicker = document.getElementById('colorPicker')
+            const sendCanvasButton = document.getElementById("sendCanvas");
             let currentColor = colorPicker.value
 
             colorPicker.addEventListener('change', () => {
@@ -143,13 +140,29 @@
                     const { id, text } = msg
                     const messageList = document.querySelector('.messages')
                     const li = document.createElement('li')
+                    if (text.startsWith("data:image")) {
+                        const label = document.createElement('div')
+                        label.textContent = id === myId ? `(${id})自分の絵` : `${id}の絵`
+                        const img = document.createElement('img')
+                        img.src = text
+                        img.width = 200
+
+                        li.appendChild(label)
+                        li.appendChild(img)
+                    }else{
                     if (id === myId) {
                         li.textContent = `(${id})自分:` + text
                     } else {
                         li.textContent = id + ': ' + text
                     }
+                }
                     messageList.appendChild(li)
                 }
+            }
+
+            sendCanvasButton.onclick = function () {
+                const imageData = canvas.toDataURL()
+                ws.send(JSON.stringify({ id: myId, text: imageData, type: 'chat' }))
             }
 
             const form = document.querySelector('.form')
