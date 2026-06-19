@@ -82,7 +82,7 @@
                     sendDrawingEvent(e.offsetX, e.offsetY, 'mousemove')
                 }
             })
-            function mousemove(x, y) {
+            function mousemove(x, y, color) {
                 if (drawing) {
                     draw(x, y, true, color)
                 }
